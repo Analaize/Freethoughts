@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earnings and Expenses Calculator</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Earnings and Expenses Calculator</h1>
+        <div class="form-group">
+            <label for="earnings">Daily Earnings (₦):</label>
+            <input type="number" id="earnings" class="form-control" min="0" step="0.01">
+        </div>
+        <div class="form-group">
+            <label for="expenses">Daily Expenses (₦):</label>
+            <input type="number" id="expenses" class="form-control" min="0" step="0.01">
+        </div>
+        <div class="form-group">
+            <label for="day">Day of the Week:</label>
+            <select id="day" class="form-control">
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+                <option value="Saturday">Saturday</option>
+                <option value="Sunday">Sunday</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <button onclick="addEntry()" class="btn btn-primary">Add Entry</button>
+        </div>
+        <div id="totals">
+            <h2>Weekly Totals</h2>
+            <p id="weeklyTotal" class="text-success">Weekly Totals - Earnings: ₦0.00 | Expenses: ₦0.00</p>
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Day</th>
+                    <th>Earnings (₦)</th>
+                    <th>Expenses (₦)</th>
+                    <th>Balance (₦)</th>
+                </tr>
+            </thead>
+            <tbody id="earningsTableBody">
+                <!-- Earnings, expenses, and balance table rows will be dynamically added here -->
+            </tbody>
+        </table>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
+
+<script>
+let weeklyData = {
+    "Monday": { earnings: [], expenses: [], balance: [] },
+    "Tuesday": { earnings: [], expenses: [], balance: [] },
+    "Wednesday": { earnings: [], expenses: [], balance: [] },
+    "Thursday": { earnings: [], expenses: [], balance: [] },
+    "Friday": { earnings: [], expenses: [], balance: [] },
+    "Saturday": { earnings: [], expenses: [], balance: [] },
+    "Sunday": { earnings: [], expenses: [], balance: [] }
+};
+
+function addEntry() {
+    const earningsInput = document.getElementById('earnings');
+    const expensesInput = document.getElementById('expenses');
+    const daySelect = document.getElementById('day');
+    
+    const earnings = parseFloat(earningsInput.value);
+    const expenses = parseFloat(expensesInput.value);
+    const day = daySelect.value;
+
+    if (!isNaN(earnings) && !isNaN(expenses)) {
+        weeklyData[day].earnings.push(earnings);
+        weeklyData[day].expenses.push(expenses);
+        const balance = earnings - expenses;
+        weeklyData[day].balance.push(balance);
+
+        updateTotals();
+        updateEarningsTable(day, earnings, expenses, balance);
+        
+        // Clear input fields
+        earningsInput.value = '';
+        expensesInput.value = '';
+    } else {
+        alert('Please enter valid numbers for earnings and expenses.');
+    }
+}
+
+function updateTotals() {
+    let weeklyTotalEarnings = 0;
+    let weeklyTotalExpenses = 0;
+    let weeklyTotalBalance = 0;
+
+    for (const day in weeklyData) {
+        const dayEarnings = weeklyData[day].earnings.reduce((acc, curr) => acc + curr, 0);
+        const dayExpenses = weeklyData[day].expenses.reduce((acc, curr) => acc + curr, 0);
+        const dayBalance = weeklyData[day].balance.reduce((acc, curr) => acc + curr, 0);
+
+        weeklyTotalEarnings += dayEarnings;
+        weeklyTotalExpenses += dayExpenses;
+        weeklyTotalBalance += dayBalance;
+    }
+
+    const weeklyTotalElement = document.getElementById('weeklyTotal');
+    weeklyTotalElement.textContent = `Weekly Totals - Earnings: ₦${weeklyTotalEarnings.toFixed(2)} | Expenses: ₦${weeklyTotalExpenses.toFixed(2)} | Balance: ₦${weeklyTotalBalance.toFixed(2)}`;
+}
+
+function updateEarningsTable(day, earnings, expenses, balance) {
+    const earningsTableBody = document.getElementById('earningsTableBody');
+    const row = document.createElement('tr');
+    row.innerHTML = `
+        <td>${day}</td>
+        <td>₦${earnings.toFixed(2)}</td>
+        <td>₦${expenses.toFixed(2)}</td>
+        <td>₦${balance.toFixed(2)}</td>
+    `;
+    earningsTableBody.appendChild(row);
+}
+
+
+</script>
+
+<!-- Bugs to Fix 
+1. Days Can't repeat in a Week
+2. Show Balance at the end of the Week
+-->

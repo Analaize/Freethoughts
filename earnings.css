@@ -1,0 +1,53 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+input[type="number"],
+select,
+button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    box-sizing: border-box; /* Ensure padding doesn't affect width */
+}
+
+select {
+    appearance: none; /* Remove default arrow icon */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23212529' width='18px' height='18px'%3E%3Cpath d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E"); /* Add custom arrow icon */
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+}
+
+button {
+    background-color: #28a745; /* Green color */
+    color: #fff;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838; /* Darker green color on hover */
+}
+
+#totals {
+    margin-top: 20px;
+}
+
+h2 {
+    margin-top: 10px;
+}
+
+p {
+    margin: 5px 0;
+}
